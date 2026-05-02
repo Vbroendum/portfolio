@@ -41,7 +41,7 @@ onMounted(async () => {
       <p class="hero-greeting">Hi, I'm</p>
       <h1 class="hero-name">Victor Brøndum</h1>
       <p class="hero-title">
-        <span class="keyword">Full Stack</span> Developer
+        <span class="keyword">Web</span> Developer
         <span class="dim"> / </span>
         <span class="keyword">Backend</span> Focused
       </p>
@@ -115,7 +115,7 @@ onMounted(async () => {
         <div class="skill-group">
           <span class="skill-label">Frontend</span>
           <div class="skill-tags">
-            <span v-for="s in ['Vue 3', 'React', 'React Native', 'Vite']" :key="s" class="tag tag-purple">{{ s }}</span>
+            <span v-for="s in ['Vue 3', 'React', 'React Native', 'Vite', 'Angular']" :key="s" class="tag tag-purple">{{ s }}</span>
           </div>
         </div>
         <div class="skill-group">
@@ -127,7 +127,7 @@ onMounted(async () => {
         <div class="skill-group">
           <span class="skill-label">DevOps</span>
           <div class="skill-tags">
-            <span v-for="s in ['Docker', 'Proxmox', 'Traefik', 'GitHub Actions', 'Prometheus']" :key="s" class="tag tag-orange">{{ s }}</span>
+            <span v-for="s in ['Docker', 'Traefik', 'GitHub Actions']" :key="s" class="tag tag-orange">{{ s }}</span>
           </div>
         </div>
       </div>
