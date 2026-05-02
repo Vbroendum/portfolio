@@ -1,0 +1,56 @@
+# Local dev — builds from source instead of pulling images
+# Usage: docker compose -f docker-compose.dev.yml up --build
+
+services:
+  api:
+    build: ./api
+    volumes:
+      - ./api/src:/app/src   # hot reload via node --watch
+    ports:
+      - "3000:3000"
+    env_file: .env.local
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - portfolio
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    command: sh -c "npm install && npm run dev -- --host"
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    networks:
+      - portfolio
+
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: portfolio
+      MARIADB_USER: portfolio
+      MARIADB_PASSWORD: portfolio
+    volumes:
+      - db_dev_data:/var/lib/mysql
+      - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "3306:3306"    # exposed so you can connect with TablePlus / DBeaver
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - portfolio
+
+networks:
+  portfolio:
+    driver: bridge
+
+volumes:
+  db_dev_data:

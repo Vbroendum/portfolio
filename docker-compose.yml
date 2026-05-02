@@ -1,0 +1,62 @@
+# This file lives on YOUR SERVER at ~/portfolio/docker-compose.yml
+# GitHub Actions will SSH in and run: docker compose pull && docker compose up -d
+
+services:
+  api:
+    image: ghcr.io/${GITHUB_USERNAME}/portfolio-api:latest
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - portfolio
+      - traefik          # your existing Traefik network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portfolio-api.rule=Host(`api.${DOMAIN}`)"
+      - "traefik.http.routers.portfolio-api.entrypoints=websecure"
+      - "traefik.http.routers.portfolio-api.tls.certresolver=letsencrypt"
+      - "traefik.http.services.portfolio-api.loadbalancer.server.port=3000"
+
+  frontend:
+    image: ghcr.io/${GITHUB_USERNAME}/portfolio-frontend:latest
+    restart: unless-stopped
+    networks:
+      - portfolio
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portfolio-frontend.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.portfolio-frontend.entrypoints=websecure"
+      - "traefik.http.routers.portfolio-frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.portfolio-frontend.loadbalancer.server.port=80"
+
+  db:
+    image: mariadb:11
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro  # only runs once on first start
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - portfolio
+
+networks:
+  portfolio:
+    driver: bridge
+  traefik:
+    external: true    # assumes Traefik is already running with this network
+
+volumes:
+  db_data:
