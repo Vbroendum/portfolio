@@ -10,6 +10,7 @@ import contactRouter from "./routes/contact.js";
 import adminRouter from "./routes/admin.js";
 
 const app = express();
+app.set('trust proxy', 1); // trust first proxy for rate limiting behind proxies/load balancers
 const PORT = process.env.PORT || 3000;
 
 // ── Security ─────────────────────────────────────────────────────────────────
