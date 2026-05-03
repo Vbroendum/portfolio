@@ -154,7 +154,7 @@ onMounted(async () => {
       <div class="footer-links">
         <a href="https://github.com/Vbroendum" target="_blank" rel="noopener">GitHub</a>
         <a href="https://linkedin.com/in/victor-broendum" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="mailto:victorbroendum@vbroendum.com">Email</a>
+        <a href="mailto:vbroendum@gmail.com">Email</a>
       </div>
     </div>
   </footer>

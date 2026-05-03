@@ -30,7 +30,7 @@ router.post(
 
     try {
       await transporter.sendMail({
-        from: `"Portfolio Contact" <${process.env.SMTP_USER}>`,
+        from: 'Portfolio Contact <hello@vbroendum.com>',
         to: process.env.CONTACT_TO,
         replyTo: email,
         subject: `Portfolio contact from ${name}`,
