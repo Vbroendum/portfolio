@@ -21,7 +21,7 @@ onMounted(async () => {
   <!-- ── Nav ──────────────────────────────────────────────────────────────────── -->
   <nav>
     <div class="container nav-inner">
-      <span class="nav-logo">vb<span class="cursor">_</span></span>
+      <span class="nav-logo">Victor Brøndum<span class="cursor">_</span></span>
       <ul class="nav-links">
         <li><a href="#projects">projects</a></li>
         <li><a href="#experience">experience</a></li>
