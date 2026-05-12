@@ -220,7 +220,7 @@ nav {
 
 /* ── Hero ─────────────────────────────────────────────────────────────────────── */
 .hero {
-  min-height: calc(100vh - 56px);
+  min-height: calc(90vh - 56px);
   display: flex;
   align-items: center;
   padding: 4rem 0;
